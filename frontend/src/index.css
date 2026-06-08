@@ -153,13 +153,99 @@ html.dark body {
   }
 }
 
-/* Hide default browser reveal buttons to stop overlapping */
-input::-ms-reveal,
-input::-ms-clear,
-input::-webkit-contacts-auto-fill-button,
-input::-webkit-credentials-type-password-toggle {
-  display: none !important;
+/* ── Auth page ── */
+.auth-page-bg {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
 }
+
+.input-modern {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.dark .input-modern {
+  border-color: var(--border);
+}
+
+.input-modern::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.input-modern:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(78, 183, 179, 0.06);
+  box-shadow: 0 0 0 3px rgba(78, 183, 179, 0.25);
+}
+
+/* ── Floating orb animations ── */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-20px) scale(1.05); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-15px) scale(1.02); }
+}
+
+@keyframes float-fast {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-10px) scale(1.08); }
+}
+
+.animate-float-slow   { animation: float-slow   8s ease-in-out infinite; }
+.animate-float-medium { animation: float-medium  6s ease-in-out infinite; }
+.animate-float-fast   { animation: float-fast    4s ease-in-out infinite; }
+
+/* ── Navbar (moved from index.html) ── */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+.nav-links a:hover { opacity: 0.8; }
+
+@media screen and (max-width: 992px) {
+  .navbar    { padding: 1rem; }
+  .nav-links { gap: 1rem; }
+  .nav-links a { font-size: 0.95rem; }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar    { flex-direction: column; align-items: center; text-align: center; }
+  .nav-links { justify-content: center; margin-top: 1rem; gap: 0.8rem; }
+  .nav-links a { font-size: 0.9rem; }
+}
+
+@media screen and (max-width: 480px) {
+  .navbar    { padding: 0.8rem; }
+  .nav-links { flex-direction: column; width: 100%; }
+  .nav-links a { width: 100%; display: block; padding: 0.5rem 0; }
+}
+
+>>>>>>> a243f84 (fix: improve input border visibility in light mode)
 * {
   transition:
     background-color 0.25s ease,

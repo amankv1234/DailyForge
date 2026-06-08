@@ -1,6 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { motion } from "framer-motion";
 import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { auth, googleProvider } from "../utils/firebase";
@@ -21,6 +22,19 @@ const LoadingSpinner = () => (
     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
   </svg>
 );
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+};
 
 const Login = () => {
   const cardRef = useRef(null);
@@ -123,109 +137,98 @@ const Login = () => {
 
   if (tempUserId) {
     return (
-      <div className="auth-page-bg min-h-[calc(100vh-3.75rem)] w-full flex items-center justify-center px-6 pt-10 pb-24 md:pb-32 overflow-hidden relative">
-        <div className="absolute top-[-120px] left-[-80px] w-[340px] h-[570px] rounded-full bg-indigo-500/20 blur-3xl"></div>
-        <div className="absolute bottom-[-140px] right-[-80px] w-[550px] h-[350px] rounded-full bg-sky-500/20 blur-3xl"></div>
-        <form
+      <div className="auth-page-bg min-h-screen w-full flex items-center justify-center px-6 py-10 overflow-hidden relative">
+        <div className="absolute top-[-120px] left-[-80px] w-[340px] h-[570px] rounded-full bg-indigo-500/20 blur-3xl animate-float-slow"></div>
+        <div className="absolute bottom-[-140px] right-[-80px] w-[550px] h-[350px] rounded-full bg-sky-500/20 blur-3xl animate-float-medium"></div>
+        <motion.form
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
           onSubmit={handle2FASubmit}
-          className="surface-bg animate-in w-full max-w-md rounded-[30px] px-8 py-10 flex flex-col gap-6 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.7)]"
+          className="surface-bg w-full max-w-md rounded-[30px] px-8 py-10 flex flex-col gap-6 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.7)]"
         >
-          <div className="text-center space-y-2">
+          <motion.div variants={itemVariants} className="text-center space-y-2">
             <h1 className="text-4xl font-bold tracking-tight text-main">Two-Factor Auth</h1>
             <p className="text-sm text-muted">Enter the code from your authenticator app</p>
-          </div>
-          <div className="flex flex-col gap-2">
+          </motion.div>
+          <motion.div variants={itemVariants} className="flex flex-col gap-2">
             <label htmlFor="totp" className="text-sm font-medium text-main">TOTP Code</label>
-            <input
-              type="text"
-              id="totp"
-              placeholder="123456"
-              required
-              value={totpCode}
-              onChange={(e) => setTotpCode(e.target.value)}
-              className="input-modern w-full px-4 py-3 rounded-2xl text-sm"
-            />
-          </div>
-          {error && (
-            <div className="px-4 py-3 rounded-2xl text-sm border bg-red-500/10 border-red-500/20 text-red-500">
-              {error}
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={18} />
+              <input
+                type="text"
+                id="totp"
+                placeholder="123456"
+                required
+                value={totpCode}
+                onChange={(e) => setTotpCode(e.target.value)}
+                className="input-modern w-full pl-11 pr-4 py-3 rounded-2xl text-sm"
+              />
             </div>
+          </motion.div>
+          {error && (
+            <motion.div variants={itemVariants} className="px-4 py-3 rounded-2xl text-sm border bg-red-500/10 border-red-500/20 text-red-500">
+              {error}
+            </motion.div>
           )}
-          <button type="submit" className="btn btn-primary w-full py-3 rounded-2xl cursor-pointer">
+          <motion.button variants={itemVariants} type="submit" className="btn btn-primary w-full py-3 rounded-2xl cursor-pointer">
             Verify
-          </button>
-        </form>
+          </motion.button>
+        </motion.form>
       </div>
     );
   }
 
   return (
-    <div className="auth-page-bg min-h-[calc(100vh-3.75rem)] w-full flex items-center justify-center px-6 pt-10 pb-24 md:pb-32 overflow-hidden relative">
-      <div className="absolute top-[-120px] left-[-80px] w-[340px] h-[570px] rounded-full bg-indigo-500/20 blur-3xl"></div>
-      <div className="absolute bottom-[-140px] right-[-80px] w-[550px] h-[350px] rounded-full bg-sky-500/20 blur-3xl"></div>
-      <div className="absolute top-[-140px] right-[-80px] w-[550px] h-[350px] rounded-full bg-violet-500/20 blur-3xl"></div>
+    <div className="auth-page-bg min-h-screen w-full flex items-center justify-center px-6 py-10 overflow-hidden relative">
+      <div className="absolute top-[-120px] left-[-80px] w-[340px] h-[570px] rounded-full bg-indigo-500/20 blur-3xl animate-float-slow"></div>
+      <div className="absolute bottom-[-140px] right-[-80px] w-[550px] h-[350px] rounded-full bg-sky-500/20 blur-3xl animate-float-medium"></div>
+      <div className="absolute top-[-140px] right-[-80px] w-[550px] h-[350px] rounded-full bg-violet-500/20 blur-3xl animate-float-fast"></div>
       <div ref={cardRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="relative z-10 w-full max-w-md will-change-transform transform-gpu">
-        <form onSubmit={handleSubmit} className="surface-bg animate-in w-full rounded-[30px] px-8 py-10 flex flex-col gap-6 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.7)]">
-          <div className="text-center space-y-2">
+        <motion.form variants={containerVariants} initial="hidden" animate="visible" onSubmit={handleSubmit} className="surface-bg w-full rounded-[30px] px-8 py-10 flex flex-col gap-6 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.7)]">
+          <motion.div variants={itemVariants} className="text-center space-y-2">
             <h1 className="text-4xl font-bold tracking-tight text-main">Welcome Back</h1>
             <p className="text-sm text-muted">Login to continue your experience</p>
-          </div>
-          <button type="button" onClick={handleGoogleLogin} disabled={isGoogleLoading || isSubmitLoading} className="
-flex items-center justify-center
-w-full px-4 py-3
-rounded-2xl
-!bg-white
-!text-black
-!border
-!border-gray-300
-font-medium
-shadow-sm
-transition-all duration-200
-hover:bg-gray-50
-hover:border-gray-400
-hover:-translate-y-[1px]
-hover:shadow-md
-dark:bg-slate-900/50
-dark:border-slate-700
-dark:text-slate-100
-disabled:opacity-50
-cursor-pointer
-">
-
+          </motion.div>
+          <motion.button variants={itemVariants} type="button" onClick={handleGoogleLogin} disabled={isGoogleLoading || isSubmitLoading} className="flex items-center justify-center w-full px-4 py-3 rounded-2xl border border-soft bg-white/70 dark:bg-slate-900/50 text-slate-700 dark:text-slate-100 font-medium transition-all duration-200 hover:-translate-y-[1px] hover:shadow-md disabled:opacity-50 cursor-pointer">
             {isGoogleLoading ? <LoadingSpinner /> : <GoogleIcon />}
             {isGoogleLoading ? "Connecting..." : "Continue with Google"}
-          </button>
-          <div className="flex items-center">
+          </motion.button>
+          <motion.div variants={itemVariants} className="flex items-center">
             <div className="flex-1 h-px bg-white/20"></div>
             <span className="px-4 text-xs font-semibold tracking-[0.2em] uppercase text-muted">OR</span>
             <div className="flex-1 h-px bg-white/20"></div>
-          </div>
-          <div className="flex flex-col gap-2">
+          </motion.div>
+          <motion.div variants={itemVariants} className="flex flex-col gap-2">
             <label htmlFor="email" className="text-sm font-medium text-main">Email</label>
-            <input type="email" id="email" placeholder="user@email.com" required value={email} onChange={(e) => setEmail(e.target.value)} className="input-modern w-full px-4 py-3 rounded-2xl text-sm" />
-          </div>
-          <div className="flex flex-col gap-2">
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={18} />
+              <input type="email" id="email" placeholder="user@email.com" required value={email} onChange={(e) => setEmail(e.target.value)} className="input-modern w-full pl-11 pr-4 py-3 rounded-2xl text-sm" />
+            </div>
+          </motion.div>
+          <motion.div variants={itemVariants} className="flex flex-col gap-2">
             <label htmlFor="password" className="text-sm font-medium text-main">Password</label>
             <div className="relative">
-              <input type={showPassword ? "text" : "password"} id="password" placeholder="••••••••" required value={password} onChange={(e) => setPassword(e.target.value)} className="input-modern w-full px-4 py-3 pr-11 rounded-2xl text-sm" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={18} />
+              <input type={showPassword ? "text" : "password"} id="password" placeholder="••••••••" required value={password} onChange={(e) => setPassword(e.target.value)} className="input-modern w-full pl-11 pr-11 py-3 rounded-2xl text-sm" />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-main transition-colors cursor-pointer">
                 {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>
             </div>
-          </div>
+          </motion.div>
           {error && (
-            <div className="px-4 py-3 rounded-2xl text-sm border bg-red-500/10 border-red-500/20 text-red-500">
+            <motion.div variants={itemVariants} className="px-4 py-3 rounded-2xl text-sm border bg-red-500/10 border-red-500/20 text-red-500">
               {error}
-            </div>
+            </motion.div>
           )}
-          <button type="submit" disabled={isGoogleLoading || isSubmitLoading} className="btn btn-primary w-full py-3 rounded-2xl cursor-pointer disabled:opacity-50">
+          <motion.button variants={itemVariants} type="submit" disabled={isGoogleLoading || isSubmitLoading} className="btn btn-primary w-full py-3 rounded-2xl cursor-pointer disabled:opacity-50">
             {isSubmitLoading ? "Logging in..." : "Login"}
-          </button>
-          <p className="text-center text-sm text-muted">
+          </motion.button>
+          <motion.p variants={itemVariants} className="text-center text-sm text-muted">
             Don&apos;t have an account?{" "}
             <Link to="/signup" className="text-main font-semibold hover:underline">Sign up</Link>
-          </p>
-        </form>
+          </motion.p>
+        </motion.form>
       </div>
     </div>
   );
