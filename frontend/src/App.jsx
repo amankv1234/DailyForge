@@ -33,10 +33,10 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/"       element={<PublicRoute><AuthLayout><Login /></AuthLayout></PublicRoute>} />
-        <Route path="/login"  element={<PublicRoute><AuthLayout><Login /></AuthLayout></PublicRoute>} />
+        <Route path="/" element={<PublicRoute><AuthLayout><Login /></AuthLayout></PublicRoute>} />
+        <Route path="/login" element={<PublicRoute><AuthLayout><Login /></AuthLayout></PublicRoute>} />
         <Route path="/signup" element={<PublicRoute><AuthLayout><Signup /></AuthLayout></PublicRoute>} />
-        <Route path="/about"  element={<AuthLayout><About /></AuthLayout>} />
+        <Route path="/about" element={<AuthLayout><About /></AuthLayout>} />
         <Route
           path="/dashboard"
           element={
@@ -95,10 +95,10 @@ const App = () => {
       <Navbar />
       <main className="app-bg min-h-screen pt-15 flex flex-col text-main transition-colors duration-300">
         <Routes>
-          <Route path="/"       element={<PublicRoute><AuthLayout><Login /></AuthLayout></PublicRoute>} />
-          <Route path="/login"  element={<PublicRoute><AuthLayout><Login /></AuthLayout></PublicRoute>} />
+          <Route path="/" element={<PublicRoute><AuthLayout><Login /></AuthLayout></PublicRoute>} />
+          <Route path="/login" element={<PublicRoute><AuthLayout><Login /></AuthLayout></PublicRoute>} />
           <Route path="/signup" element={<PublicRoute><AuthLayout><Signup /></AuthLayout></PublicRoute>} />
-          <Route path="/about"  element={<AuthLayout><About /></AuthLayout>} />
+          <Route path="/about" element={<AuthLayout><About /></AuthLayout>} />
           <Route
             path="/dashboard"
             element={
